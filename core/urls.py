@@ -20,4 +20,5 @@ from django.urls import path
 urlpatterns = [
     path('', views.getMeme),
     path('admin/', admin.site.urls),
+    path('map/', views.HikingSessionView.as_view())
 ]
