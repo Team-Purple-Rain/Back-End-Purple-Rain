@@ -20,5 +20,6 @@ from django.urls import path
 urlpatterns = [
     path('', views.getMeme),
     path('admin/', admin.site.urls),
-    path('map/', views.HikingSessionView.as_view())
+    path('map/', views.HikingSessionView.as_view()),
+    path('user/', views.UserProfileView.as_view()),
 ]

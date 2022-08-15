@@ -1,4 +1,4 @@
-from thatguide.models import HikingSession
+from thatguide.models import HikingSession, User
 from rest_framework import serializers
 
 
@@ -15,3 +15,9 @@ class HikeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Valid Longitude Required, Needs To Be Between -180 And 180")
         return value
 
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = '__all__'
