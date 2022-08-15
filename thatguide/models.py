@@ -44,29 +44,7 @@ class User(AbstractUser):
 
 class HikingSession(TimeStamp):
     hike_user = models.ForeignKey('User', related_name='hiker', on_delete=models.CASCADE, null=True)
-    one = 1
-    two = 2
-    three = 3
-    four = 4
-    five = 5
-    six = 6
-    seven = 7
-    eight = 8
-    nine = 9
-    ten = 10
-    distance_choice = [
-        (one, '1 mile'),
-        (two, '2 miles'),
-        (three, '3 miles'),
-        (four, '4 miles'),
-        (five, '5 miles'),
-        (six, '6 miles'),
-        (seven, '7 miles'),
-        (eight, '8 miles'),
-        (nine, '9 miles'),
-        (ten, '10 miles'),
-    ]
-    distance_list = models.IntegerField(choices=distance_choice, default=one)
+    distance = models.IntegerField(null=False, blank=False, default=1)
     #location is JSONField so that front-end can pass the object
     start_location = models.JSONField(null=False, blank=False)
     end_location = models.JSONField(null=True, blank=True)

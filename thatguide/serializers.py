@@ -15,6 +15,11 @@ class HikeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Valid Longitude Required, Needs To Be Between -180 And 180")
         return value
 
+    def validate_distance(self, value):
+        if round(value) not in range(0, 11):
+            raise serializers.ValidationError("Valid Distance Required, Needs To Be Between 0.1 And 10")
+        return value
+
 
 class UserSerializer(serializers.ModelSerializer):
 
