@@ -21,6 +21,7 @@ class User(AbstractUser):
         (medium, 'medium'),
         (advanced, 'advanced'),
     ]
+    experience_list = models.TextField(max_length=15, choices=experience_level, default=beginner, null=True, blank=True)
     # desired pace choices
     leisure = 'leisure'
     powerwalk = 'powerwalk'
@@ -31,6 +32,7 @@ class User(AbstractUser):
         (powerwalk, 'powerwalk'),
         (chased_by_bear, 'chased by bear'),
     ]
+    pace_list = models.TextField(max_length=15, choices=desired_pace, default=leisure, null=True, blank=True)
     username = models.CharField(max_length=100, unique=True, null=True, blank=True)
     email = models.CharField(max_length=100, null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
