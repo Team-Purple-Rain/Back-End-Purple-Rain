@@ -43,7 +43,7 @@ class User(AbstractUser):
 
 
 class HikingSession(TimeStamp):
-    # hike_user = models.ForeignKey('User', related_name='hiker', on_delete=models.CASCADE, null=True)
+    hike_user = models.ForeignKey('User', related_name='hiker', on_delete=models.CASCADE, null=True)
     one = 1
     two = 2
     three = 3
