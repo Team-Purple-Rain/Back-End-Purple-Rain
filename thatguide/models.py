@@ -10,7 +10,6 @@ class TimeStamp(models.Model):
 
 
 class HikingSession(TimeStamp):
-    #id = models.BigAutoField(primary_key=True)
     #hike_user = models.ForeignKey('User', related_name='hiker', on_delete=models.CASCADE)
     one = 1
     five = 5

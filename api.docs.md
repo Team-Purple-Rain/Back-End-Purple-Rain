@@ -19,3 +19,30 @@ Base url for all endpoints:
 ```
 
 <br />
+
+## Start Hike App
+
+- **Start Hike Session**
+  - method: `POST`
+  - url: `<BASE_URL>/map/`
+  - Response: 201 Created:
+
+```
+      {
+        "id": 3,
+        "created_at": "2022-08-15T02:12:48.444555Z",
+        "updated_at": "2022-08-15T02:12:48.444605Z",
+        "distance_list": 1,
+        "start_location": {
+          "latitude": 39.099105,
+          "longitude": -79.660706
+        },
+        "end_location": null,
+        "distance_traveled": null,
+        "avg_mph": null,
+        "travel_time": null,
+        "elevation_gain": null
+      }
+```
+
+<br />
