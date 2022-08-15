@@ -12,11 +12,25 @@ class TimeStamp(models.Model):
 class HikingSession(TimeStamp):
     #hike_user = models.ForeignKey('User', related_name='hiker', on_delete=models.CASCADE)
     one = 1
+    two = 2
+    three = 3
+    four = 4
     five = 5
+    six = 6
+    seven = 7
+    eight = 8
+    nine = 9
     ten = 10
     distance_choice = [
         (one, '1 mile'),
+        (two, '2 miles'),
+        (three, '3 miles'),
+        (four, '4 miles'),
         (five, '5 miles'),
+        (six, '6 miles'),
+        (seven, '7 miles'),
+        (eight, '8 miles'),
+        (nine, '9 miles'),
         (ten, '10 miles'),
     ]
     distance_list = models.IntegerField(choices=distance_choice, default=one)
