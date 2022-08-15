@@ -2,8 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import requests
 from rest_framework import generics
-from thatguide.models import HikingSession
-from thatguide.serializers import HikeSerializer
+from thatguide.models import HikingSession, User
+from thatguide.serializers import HikeSerializer, UserSerializer
 
 
 """
@@ -27,3 +27,11 @@ POST /map/ - start hiking session
 class HikingSessionView(generics.CreateAPIView):
     queryset = HikingSession.objects.all()
     serializer_class = HikeSerializer
+
+"""
+GET /user/ - display user profile
+POST /user/ - create user profile
+"""
+class UserProfileView(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

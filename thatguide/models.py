@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
 class TimeStamp(models.Model):
@@ -9,8 +10,40 @@ class TimeStamp(models.Model):
         abstract = True
 
 
+class User(AbstractUser):
+    # experience level choices
+    beginner = 'beginner'
+    medium = 'medium'
+    advanced = 'advanced'
+    experience_level = [
+        ('', 'EMPTY'),
+        (beginner, 'beginner'),
+        (medium, 'medium'),
+        (advanced, 'advanced'),
+    ]
+    # desired pace choices
+    leisure = 'leisure'
+    powerwalk = 'powerwalk'
+    chased_by_bear = 'chased by bear'
+    desired_pace = [
+        ('', 'EMPTY'),
+        (leisure, 'leisure'),
+        (powerwalk, 'powerwalk'),
+        (chased_by_bear, 'chased by bear'),
+    ]
+    # username = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    # email = models.CharField(max_length=100, null=True, blank=True)
+    # phone = models.CharField(max_length=15, null=True, blank=True)
+
+    def __str__(self):
+        return self.username
+
+    def __repr__(self):
+        return f"<User username={self.username} pk={self.pk}>"
+
+
 class HikingSession(TimeStamp):
-    #hike_user = models.ForeignKey('User', related_name='hiker', on_delete=models.CASCADE)
+    # hike_user = models.ForeignKey('User', related_name='hiker', on_delete=models.CASCADE, null=True)
     one = 1
     two = 2
     three = 3
@@ -42,4 +75,4 @@ class HikingSession(TimeStamp):
     #travel_time is an integerfield in secconds. Total amount to be divded by 60 to get minutes. 
     travel_time = models.IntegerField(null=True, blank=True)
     elevation_gain = models.IntegerField(null=True, blank=True)
-    
+

@@ -147,3 +147,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 django_on_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
+
+AUTH_USER_MODEL = 'thatguide.User'
