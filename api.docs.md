@@ -112,16 +112,17 @@ Base url for all endpoints:
   - Response: 201 created
 
 ```
-  {
-	"id": 4,
-	"created_at": "2022-08-16T21:22:54.182700Z",
-	"updated_at": "2022-08-16T21:22:54.182733Z",
-	"location": {
-		"latitude": 52.099105,
-		"longitude": -64.660706
-	},
-	"elevation": null
-}
+        {
+          "id": 5,
+          "created_at": "2022-08-16T21:43:41.548609Z",
+          "updated_at": "2022-08-16T21:43:41.548632Z",
+          "location": {
+            "latitude": 52.099105,
+            "longitude": -64.660706
+          },
+          "elevation": null,
+          "hike_session": 4
+        }
 ```
 
 <br />
@@ -132,16 +133,17 @@ Base url for all endpoints:
   - Response: 200 ok: an array of the objects for the particular checkpoint:
 
 ```
-  {
-	"id": 4,
-	"created_at": "2022-08-16T21:22:54.182700Z",
-	"updated_at": "2022-08-16T21:22:54.182733Z",
-	"location": {
-		"latitude": 52.099105,
-		"longitude": -64.660706
-	},
-	"elevation": null
-}
+      {
+        "id": 5,
+        "created_at": "2022-08-16T21:43:41.548609Z",
+        "updated_at": "2022-08-16T21:43:41.548632Z",
+        "location": {
+          "latitude": 52.099105,
+          "longitude": -64.660706
+        },
+        "elevation": null,
+        "hike_session": 4
+      }
 ```
 
 ## User Authentication
