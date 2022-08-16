@@ -28,7 +28,7 @@ Base url for all endpoints:
   - Response: 201 Created:
 
 ```
-      {
+{
         "id": 3,
         "created_at": "2022-08-15T02:12:48.444555Z",
         "updated_at": "2022-08-15T02:12:48.444605Z",
@@ -36,13 +36,13 @@ Base url for all endpoints:
         "start_location": {
           "latitude": 39.099105,
           "longitude": -79.660706
-        },
+},
         "end_location": null,
         "distance_traveled": null,
         "avg_mph": null,
         "travel_time": null,
         "elevation_gain": null
-      }
+}
 ```
 
 <br />
@@ -114,6 +114,7 @@ Base url for all endpoints:
         "is_active": true,
         "date_joined": "2022-08-16T13:25:17.861669Z",
         "experience_list": "beginner",
+        "pace_list": "leisure",
         "username": "seconduser",
         "email": null,
         "phone": null,
@@ -145,7 +146,7 @@ Base url for all endpoints:
 	      "is_active": true,
 	      "date_joined": "2022-08-16T14:58:41.661105Z",
 	      "experience_list": "beginner",
-        "pace_list": "leisure",
+        "pace_list": "powerwalk",
 	      "username": "fifthuser",
 	      "email": "",
 	      "phone": null,
