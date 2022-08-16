@@ -136,7 +136,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-#AUTH_USER_MODEL = 'thatguide.User'
+AUTH_USER_MODEL = 'thatguide.User'
 
 django_on_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
