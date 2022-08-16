@@ -82,8 +82,6 @@ Base url for all endpoints:
 
 - method: `GET`
 - url: `<BASE_URL>/users/`
-- data: you need to set authorization header with the token as the value
-  - Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
 - response: an array of user objects:
 
 ```
@@ -104,8 +102,8 @@ Base url for all endpoints:
         "phone": null,
         "groups": [],
         "user_permissions": []
-      },
-      {
+},
+{
         "id": 2,
         "password": "admin",
         "last_login": null,
@@ -122,7 +120,7 @@ Base url for all endpoints:
         "phone": null,
         "groups": [],
         "user_permissions": []
-	},
+},
 
 ```
 
@@ -133,11 +131,11 @@ Base url for all endpoints:
 - method: `PATCH`
 - url: `<BASE_URL>/users/me`
 - data: you need to set authorization header with the token as the value
-  - Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
+- Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
 - response: an array of users updated objects:
 
 ```
-      {
+{
 	      "id": 5,
 	      "password": "pbkdf2_sha256$320000$Ccg0yWqd8qmsoCfdtHauCO$83o6Nvu6ZZ8mo3VVX0Ny9K9blxjg2/rS/C6cc8lETRA=",
 	      "last_login": "2022-08-16T14:58:56.641874Z",
@@ -148,13 +146,13 @@ Base url for all endpoints:
 	      "is_active": true,
 	      "date_joined": "2022-08-16T14:58:41.661105Z",
 	      "experience_list": "beginner",
-      	"pace_list": "leisure",
+        "pace_list": "leisure",
 	      "username": "fifthuser",
 	      "email": "",
 	      "phone": null,
 	      "groups": [],
 	      "user_permissions": []
-      }
+}
 
 ```
 
