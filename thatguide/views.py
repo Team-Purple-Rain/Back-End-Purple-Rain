@@ -30,6 +30,15 @@ class HikingSessionView(generics.CreateAPIView):
 
 
 """
+GET /map/<int:pk/ - view hiking session
+PATCH /map/<int:pk/ - edit hiking session
+"""
+class HikingSessionViewList(generics.RetrieveUpdateDestroyAPIView):
+    queryset = HikingSession.objects.all()
+    serializer_class = HikeSerializer
+
+
+"""
 GET /users/ - display all users
 """
 class UserProfileView(generics.ListCreateAPIView):

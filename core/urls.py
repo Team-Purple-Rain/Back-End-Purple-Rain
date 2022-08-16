@@ -23,6 +23,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('map/', views.HikingSessionView.as_view()),
+    path('map/<int:pk>/', views.HikingSessionViewList.as_view()),
     path('users/', views.UserProfileView.as_view()),
     path('users/me/', views.UserEditView.as_view()),
 ]

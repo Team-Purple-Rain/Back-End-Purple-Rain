@@ -42,10 +42,70 @@ Base url for all endpoints:
         "avg_mph": null,
         "travel_time": null,
         "elevation_gain": null
+        "hike_user": null
 }
 ```
 
 <br />
+
+- **View Hike Session**
+  - method: `GET`
+  - url: `<BASE_URL>/map/<int:pk/`
+  - Response: 200 ok: an array of the objects for the particular hike session:
+
+```
+    {
+      "id": 1,
+      "created_at": "2022-08-16T19:01:31.865507Z",
+      "updated_at": "2022-08-16T19:16:29.902823Z",
+      "distance": 1,
+      "start_location": {
+        "latitude": 39.099105,
+        "longitude": -79.660706
+      },
+      "end_location": {
+        "latitude": 39.099105,
+        "longitude": -40.660706
+      },
+      "distance_traveled": null,
+      "avg_mph": null,
+      "travel_time": 8,
+      "elevation_gain": null,
+      "hike_user": null
+    }
+```
+
+<br />
+
+- **Update/Edit Hike Session**
+  - method: `PATCH`
+  - url: `<BASE_URL>/map/<int:pk/`
+  - Response: 200 ok: an array of the objects for the particular hike session:
+
+```
+    {
+      "id": 1,
+      "created_at": "2022-08-16T19:01:31.865507Z",
+      "updated_at": "2022-08-16T19:16:29.902823Z",
+      "distance": 1,
+      "start_location": {
+        "latitude": 39.099105,
+        "longitude": -79.660706
+      },
+      "end_location": {
+        "latitude": 39.099105,
+        "longitude": -40.660706
+      },
+      "distance_traveled": null,
+      "avg_mph": null,
+      "travel_time": 8,
+      "elevation_gain": null,
+      "hike_user": null
+    }
+```
+
+<br />
+
 
 ## User Authentication
 
