@@ -58,6 +58,6 @@ class HikingSession(TimeStamp):
 
 
 class HikingCheckPoint(TimeStamp):
-    #checkpoint = models.ForeignKey('HikingSession', related_name='checkpoints', on_delete=models.CASCADE)
+    hike_session = models.ForeignKey('HikingSession', related_name='checkpoints', on_delete=models.CASCADE)
     location = models.JSONField(null=False, blank=False)
     elevation = models.IntegerField(null=True, blank=True)
