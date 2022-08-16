@@ -24,6 +24,8 @@ urlpatterns = [
     path('auth/', include('djoser.urls.authtoken')),
     path('map/', views.HikingSessionView.as_view()),
     path('map/<int:pk>/', views.HikingSessionViewList.as_view()),
+    path('map/<int:pk>/checkpoint/', views.HikingCheckPointPostView.as_view()),
+    path('map/<int:pk>/<checkpoint_pk>/', views.HikingCheckPointView.as_view()),
     path('users/', views.UserProfileView.as_view()),
     path('users/me/', views.UserEditView.as_view()),
 ]

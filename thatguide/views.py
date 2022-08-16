@@ -2,8 +2,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import requests
 from rest_framework import generics, permissions
-from thatguide.models import HikingSession, User
+from thatguide.models import HikingCheckPoint, HikingSession, User
 from thatguide.serializers import HikeSerializer, UserSerializer
+from thatguide.serializers import HikingCheckPointSerializer
+from django.shortcuts import get_object_or_404
 
 
 """
@@ -36,6 +38,25 @@ PATCH /map/<int:pk/ - edit hiking session
 class HikingSessionViewList(generics.RetrieveUpdateDestroyAPIView):
     queryset = HikingSession.objects.all()
     serializer_class = HikeSerializer
+
+
+"""
+GET /map/<int:pk>/<checkpoint_pk>/' - view updated location
+"""
+class HikingCheckPointView(generics.ListCreateAPIView):
+    queryset = HikingCheckPoint.objects.all()
+    serializer_class = HikingCheckPointSerializer
+
+    def get_queryset(self):
+        return HikingCheckPoint.objects.filter(id=self.kwargs["checkpoint_pk"])
+
+
+"""
+POST /map/<int:pk>/checkpoint/' - post updated location
+"""
+class HikingCheckPointPostView(generics.ListCreateAPIView):
+    queryset = HikingCheckPoint.objects.all()
+    serializer_class = HikingCheckPointSerializer
 
 
 """
