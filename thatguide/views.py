@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import requests
-from rest_framework import generics
+from rest_framework import generics, permissions
 from thatguide.models import HikingSession, User
 from thatguide.serializers import HikeSerializer, UserSerializer
 
@@ -28,10 +28,26 @@ class HikingSessionView(generics.CreateAPIView):
     queryset = HikingSession.objects.all()
     serializer_class = HikeSerializer
 
+
 """
-GET /user/ - display user profile
-POST /user/ - create user profile
+GET /users/ - display all users
 """
 class UserProfileView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+"""
+GET /users/me/ - show your logged in profile
+PATCH /users/me/ - update your profile
+"""
+class UserEditView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        obj = queryset.get(pk=self.request.user.id)
+        self.check_object_permissions(self.request, obj)
+        return obj
