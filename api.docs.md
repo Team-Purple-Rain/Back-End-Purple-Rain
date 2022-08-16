@@ -106,6 +106,43 @@ Base url for all endpoints:
 
 <br />
 
+- **Post Checkpoint Within Session**
+  - method: `POST`
+  - url: `<BASE_URL>/map/<int:pk/checkpoint/`
+  - Response: 201 created
+
+```
+  {
+	"id": 4,
+	"created_at": "2022-08-16T21:22:54.182700Z",
+	"updated_at": "2022-08-16T21:22:54.182733Z",
+	"location": {
+		"latitude": 52.099105,
+		"longitude": -64.660706
+	},
+	"elevation": null
+}
+```
+
+<br />
+
+- **See Checkpoint Within Session**
+  - method: `GET`
+  - url: `<BASE_URL>/map/<int:pk/checkpoint_pk/`
+  - Response: 200 ok: an array of the objects for the particular checkpoint:
+
+```
+  {
+	"id": 4,
+	"created_at": "2022-08-16T21:22:54.182700Z",
+	"updated_at": "2022-08-16T21:22:54.182733Z",
+	"location": {
+		"latitude": 52.099105,
+		"longitude": -64.660706
+	},
+	"elevation": null
+}
+```
 
 ## User Authentication
 
