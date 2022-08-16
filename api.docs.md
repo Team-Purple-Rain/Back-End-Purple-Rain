@@ -114,7 +114,7 @@ Base url for all endpoints:
         "is_active": true,
         "date_joined": "2022-08-16T13:25:17.861669Z",
         "experience_list": "beginner",
-        "pace_list": "leisure",
+          "pace_list": "leisure",
         "username": "seconduser",
         "email": null,
         "phone": null,
