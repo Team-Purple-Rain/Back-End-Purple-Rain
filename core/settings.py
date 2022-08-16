@@ -44,10 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'thatguide',
     'rest_framework',
     'rest_framework.authtoken',
     'django_extensions',
+    'thatguide',
     'djoser',
     'corsheaders',
     
@@ -136,6 +136,10 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'thatguide.User'
+
+django_on_heroku.settings(locals())
+del DATABASES['default']['OPTIONS']['sslmode']
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -144,8 +148,3 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
-
-django_on_heroku.settings(locals())
-del DATABASES['default']['OPTIONS']['sslmode']
-
-AUTH_USER_MODEL = 'thatguide.User'
