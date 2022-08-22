@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='hikingcheckpoint',
-            name='checkpoint',
+            name='hike_session',
             field=models.ForeignKey(default=2, on_delete=django.db.models.deletion.CASCADE, related_name='checkpoints', to='thatguide.hikingsession'),
             preserve_default=False,
         ),
