@@ -9,7 +9,7 @@ from thatguide.serializers import HikeSerializer, UserSerializer
 from thatguide.serializers import HikingCheckPointSerializer
 from math import radians, cos, sin, asin, sqrt
 from django.db.models import F
-
+from decimal import Decimal
 
 """
 Home page, get's you a free meme
@@ -97,7 +97,7 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
 
                 # calculate the result
                 return (c * r)
-            HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=(get_distance(cord1, cord2)) + this_distance)
+            HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=Decimal(get_distance(cord1, cord2)) + Decimal(this_distance))
             return response
         
         if this_distance == None:
