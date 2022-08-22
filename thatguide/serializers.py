@@ -40,3 +40,4 @@ class HikingCheckPointSerializer(serializers.ModelSerializer):
         if 'longitude' not in value or round(value['longitude']) not in range(-180, 181):
             raise serializers.ValidationError("Valid Longitude Required, Needs To Be Between -180 And 180")
         return value
+
