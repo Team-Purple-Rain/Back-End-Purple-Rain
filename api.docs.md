@@ -259,3 +259,60 @@ Base url for all endpoints:
 ```
 
  <br />
+
+
+## Display a User's Hiking Sessions
+
+- method: `GET`
+- url: `<BASE_URL>/users/me/map`
+- data: you need to set authorization header with the token as the value
+- Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
+- response: an array of users objects:
+
+```
+[
+	{
+		"id": 17,
+		"created_at": "2022-08-23T14:19:38.753504Z",
+		"updated_at": "2022-08-23T14:19:38.753569Z",
+		"distance": 1,
+		"start_location": {
+			"latitude": 8,
+			"longitude": 13
+		},
+		"end_location": {
+			"latitude": 80,
+			"longitude": 10
+		},
+		"distance_traveled": null,
+		"avg_mph": null,
+		"travel_time": null,
+		"elevation_gain": null,
+		"current_elevation": "40.00",
+		"hike_user": 5
+	},
+	{
+		"id": 18,
+		"created_at": "2022-08-23T14:31:13.556576Z",
+		"updated_at": "2022-08-23T14:31:13.556594Z",
+		"distance": 1,
+		"start_location": {
+			"latitude": 8,
+			"longitude": 13
+		},
+		"end_location": {
+			"latitude": 80,
+			"longitude": 10
+		},
+		"distance_traveled": null,
+		"avg_mph": null,
+		"travel_time": null,
+		"elevation_gain": null,
+		"current_elevation": "40.00",
+		"hike_user": 5
+	}
+]
+
+```
+
+ <br />
