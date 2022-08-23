@@ -9,6 +9,7 @@ from thatguide.serializers import HikeSerializer, UserSerializer
 from thatguide.serializers import HikingCheckPointSerializer
 from math import radians, cos, sin, asin, sqrt
 from django.db.models import F
+from django.shortcuts import get_object_or_404
 from decimal import Decimal
 
 """
@@ -27,11 +28,26 @@ def getMeme(request):
 
 
 """
+GET /map/ - view
 POST /map/ - start hiking session
 """
-class HikingSessionView(generics.CreateAPIView):
+class HikingSessionView(generics.ListCreateAPIView):
     queryset = HikingSession.objects.all()
     serializer_class = HikeSerializer
+
+"""
+GET /map/ - view user's hikes
+"""
+class UserHikingSessionView(generics.ListAPIView):
+    queryset = HikingSession.objects.all()
+    serializer_class = HikeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = HikingSession.objects.all().filter(hike_user=self.request.user)
+        # obj = queryset.get(pk=self.request.user.id)
+        # self.check_object_permissions(self.request, obj)
+        return queryset
 
 
 """
