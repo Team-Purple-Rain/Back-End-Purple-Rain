@@ -1,13 +1,18 @@
 from thatguide.models import HikingSession, User, HikingCheckPoint
 from rest_framework import serializers
 
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'username',)
 
 class HikeSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(slug_field="username", read_only=True)
+    hike_user = serializers.SlugRelatedField(slug_field="username", read_only=True)
 
     class Meta:
         model = HikingSession
-        fields = '__all__'
+        fields = ('created_at', 'updated_at', 'hike_user', 'distance', 'start_location', 'end_location', 'distance_traveled', 'avg_mph', 'travel_time', 'elevation_gain', 'current_elevation')
 
     def validate_start_location(self, value):
         if 'latitude' not in value or round(value['latitude']) not in range(-90, 91):
@@ -23,11 +28,6 @@ class HikeSerializer(serializers.ModelSerializer):
 
 
 
-class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = '__all__'
 
 
 class HikingCheckPointSerializer(serializers.ModelSerializer):
