@@ -62,6 +62,11 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
+        start_elevation = HikingSession.objects.filter(pk=request.data['hike_session']).values('current_elevation')
+        #print(current_elevation)
+        for elevation in start_elevation:
+            this_elevation = elevation['current_elevation']
+        print(this_elevation)
         current_location = HikingSession.objects.filter(pk=request.data['hike_session']).values('start_location')
         #print(current_location)
         for location in current_location:
@@ -72,9 +77,11 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
         for distance in current_distance:
             this_distance = distance['distance_traveled']
         #print(this_distance)
-        if this_distance != None:
+        if this_distance is not None:
             qs = HikingCheckPoint.objects.filter(hike_session__pk=request.data['hike_session']).order_by('-created_at')[:2]
             cord1, cord2 = [cp.location for cp in qs]
+            new_elevation, this_elevation = [cpl.elevation for cpl in qs]
+            print(new_elevation)
 
             def get_distance(cord1, cord2):
 
@@ -98,13 +105,25 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
                 # calculate the result
                 return (c * r)
             HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=Decimal(get_distance(cord1, cord2)) + Decimal(this_distance))
+
+            def calc_elevation(new_elevation, this_elevation):
+                print(new_elevation)
+                elevation1 = new_elevation
+                elevation2 = this_elevation
+                return (elevation1 - elevation2)
+            HikingSession.objects.filter(pk=request.data['hike_session']).update(elevation_gain=calc_elevation(new_elevation, this_elevation))
             return response
         
-        if this_distance == None:
+        if this_distance is None:
             qs = HikingCheckPoint.objects.filter(hike_session__pk=request.data['hike_session']).order_by('-created_at')[:1]
             get_location = qs.values('location')
             for current in get_location:
                 current_spot = current['location']
+            new_elevation = qs.values('elevation')
+            for e in new_elevation:
+                c_elevation = e['elevation']
+            print(c_elevation)
+
             cord2 = current_spot
             cord1 = this_location
 
@@ -130,7 +149,15 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
                 # calculate the result
                 return (c * r)
             HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=get_distance(cord1, cord2))
+
+            def calc_elevation(c_elevation, this_elevation):
+
+                elevation1 = c_elevation
+                elevation2 = this_elevation
+                return (elevation1 - elevation2)
+            HikingSession.objects.filter(pk=request.data['hike_session']).update(elevation_gain=calc_elevation(c_elevation, this_elevation))
             return response
+
 
 """
 GET /users/ - display all users
