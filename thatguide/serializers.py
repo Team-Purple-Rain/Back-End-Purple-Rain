@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 
 class HikeSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(slug_field="username", read_only=True)
 
     class Meta:
         model = HikingSession
@@ -19,6 +20,7 @@ class HikeSerializer(serializers.ModelSerializer):
         if round(value) not in range(0, 11):
             raise serializers.ValidationError("Valid Distance Required, Needs To Be Between 0.1 And 10")
         return value
+
 
 
 class UserSerializer(serializers.ModelSerializer):

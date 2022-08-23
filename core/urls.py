@@ -28,4 +28,5 @@ urlpatterns = [
     path('map/<int:pk>/<checkpoint_pk>/', views.HikingCheckPointView.as_view()),
     path('users/', views.UserProfileView.as_view()),
     path('users/me/', views.UserEditView.as_view()),
+    path('users/me/map/', views.UserHikingSessionView.as_view()),
 ]
