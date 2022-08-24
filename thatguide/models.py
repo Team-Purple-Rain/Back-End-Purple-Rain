@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -62,3 +63,4 @@ class HikingCheckPoint(TimeStamp):
     hike_session = models.ForeignKey('HikingSession', related_name='checkpoints', on_delete=models.CASCADE)
     location = models.JSONField(null=False, blank=False)
     elevation = models.IntegerField(null=True, blank=True)
+    time_logged = models.DateTimeField(auto_now_add=False, default=timezone.now)
