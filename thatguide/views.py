@@ -54,6 +54,16 @@ class UserHikingSessionView(generics.ListAPIView):
 
 
 """
+GET /map/<int:pk>/<checkpoint_pk>/' - view updated location
+"""
+class HikingCheckPointView(generics.ListCreateAPIView):
+    queryset = HikingCheckPoint.objects.all()
+    serializer_class = HikingCheckPointSerializer
+
+    def get_queryset(self):
+        return HikingCheckPoint.objects.filter(id=self.kwargs["checkpoint_pk"])
+
+"""
 GET /map/<int:pk/ - view hiking session
 PATCH /map/<int:pk/ - edit hiking session
 """
@@ -204,14 +214,3 @@ class BulkViewSet(generics.CreateAPIView):
     def get_serializer(self, *args, **kwargs):
         kwargs['many'] = True
         return super().get_serializer(*args, **kwargs)
-
-
-# """
-# GET /map/<int:pk>/<checkpoint_pk>/' - view updated location
-# """
-# class HikingCheckPointView(generics.ListCreateAPIView):
-#     queryset = HikingCheckPoint.objects.all()
-#     serializer_class = HikingCheckPointSerializer
-
-#     def get_queryset(self):
-#         return HikingCheckPoint.objects.filter(id=self.kwargs["checkpoint_pk"])

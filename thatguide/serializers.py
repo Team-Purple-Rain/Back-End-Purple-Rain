@@ -1,18 +1,20 @@
 from thatguide.models import HikingSession, User, HikingCheckPoint
 from rest_framework import serializers
 
+
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
         fields = ('id', 'username',)
 
+
 class HikeSerializer(serializers.ModelSerializer):
     hike_user = serializers.SlugRelatedField(slug_field="username", read_only=True)
 
     class Meta:
         model = HikingSession
-        fields = ('created_at', 'updated_at', 'hike_user', 'distance', 'start_location', 'end_location', 'distance_traveled', 'avg_mph', 'travel_time', 'elevation_gain', 'current_elevation')
+        fields = '__all__'
 
     def validate_start_location(self, value):
         if 'latitude' not in value or round(value['latitude']) not in range(-90, 91):
@@ -25,9 +27,6 @@ class HikeSerializer(serializers.ModelSerializer):
         if round(value) not in range(0, 11):
             raise serializers.ValidationError("Valid Distance Required, Needs To Be Between 0.1 And 10")
         return value
-
-
-
 
 
 class HikingCheckPointSerializer(serializers.ModelSerializer):
@@ -49,6 +48,3 @@ class BulkCheckPointSerializer(serializers.ModelSerializer):
     class Meta:
         model = HikingCheckPoint
         fields = '__all__'
-
-
-
