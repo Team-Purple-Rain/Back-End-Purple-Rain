@@ -123,7 +123,8 @@ Base url for all endpoints:
             "latitude": 52.099105,
             "longitude": -64.660706
           },
-          "elevation": null,
+          "elevation": 123,
+          "time_logged": "2022-08-22T19:59:12.654784Z" ,
           "hike_session": 4
         }
 ```
