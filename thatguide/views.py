@@ -1,16 +1,19 @@
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 import requests
 from rest_framework import generics, permissions
-from thatguide import serializers
+#from thatguide import serializers
 from thatguide.models import HikingCheckPoint, HikingSession, User
 from thatguide.serializers import HikeSerializer, UserSerializer
 from thatguide.serializers import HikingCheckPointSerializer
+from thatguide.serializers import BulkCheckPointSerializer
 from math import radians, cos, sin, asin, sqrt
-from django.db.models import F
-from django.shortcuts import get_object_or_404
+#from django.db.models import F
+#from django.shortcuts import get_object_or_404
 from decimal import Decimal
+#from thatguide.rest import CreateBulkMixin
+
 
 """
 Home page, get's you a free meme
@@ -59,15 +62,6 @@ class HikingSessionViewList(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = HikeSerializer
 
 
-"""
-GET /map/<int:pk>/<checkpoint_pk>/' - view updated location
-"""
-class HikingCheckPointView(generics.ListCreateAPIView):
-    queryset = HikingCheckPoint.objects.all()
-    serializer_class = HikingCheckPointSerializer
-
-    def get_queryset(self):
-        return HikingCheckPoint.objects.filter(id=self.kwargs["checkpoint_pk"])
 
 """
 POST /map/<int:pk>/checkpoint/' - post updated location
@@ -78,11 +72,12 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        start_elevation = HikingSession.objects.filter(pk=request.data['hike_session']).values('current_elevation')
-        #print(current_elevation)
-        for elevation in start_elevation:
-            this_elevation = elevation['current_elevation']
-        print(this_elevation)
+        hiking_session = HikingSession.objects.get(pk=request.data['hike_session'])  #.values('start_elevation')
+        hiking_session.current_elevation
+        #print(hiking_session.current_elevation)
+        #for elevation in start_elevation:
+        this_elevation = hiking_session.current_elevation
+        #print(this_elevation)
         current_location = HikingSession.objects.filter(pk=request.data['hike_session']).values('start_location')
         #print(current_location)
         for location in current_location:
@@ -198,3 +193,25 @@ class UserEditView(generics.RetrieveUpdateDestroyAPIView):
         self.check_object_permissions(self.request, obj)
         return obj
 
+
+"""
+POST /map/<int:pk>/bulk/ - post bulk checkpoint data
+"""
+class BulkViewSet(generics.CreateAPIView):
+    queryset = HikingCheckPoint.objects.all()
+    serializer_class = BulkCheckPointSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        kwargs['many'] = True
+        return super().get_serializer(*args, **kwargs)
+
+
+# """
+# GET /map/<int:pk>/<checkpoint_pk>/' - view updated location
+# """
+# class HikingCheckPointView(generics.ListCreateAPIView):
+#     queryset = HikingCheckPoint.objects.all()
+#     serializer_class = HikingCheckPointSerializer
+
+#     def get_queryset(self):
+#         return HikingCheckPoint.objects.filter(id=self.kwargs["checkpoint_pk"])
