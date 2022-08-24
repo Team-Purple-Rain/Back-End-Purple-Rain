@@ -62,15 +62,6 @@ class HikingSessionViewList(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = HikeSerializer
 
 
-"""
-GET /map/<int:pk>/<checkpoint_pk>/' - view updated location
-"""
-class HikingCheckPointView(generics.ListCreateAPIView):
-    queryset = HikingCheckPoint.objects.all()
-    serializer_class = HikingCheckPointSerializer
-
-    def get_queryset(self):
-        return HikingCheckPoint.objects.filter(id=self.kwargs["checkpoint_pk"])
 
 """
 POST /map/<int:pk>/checkpoint/' - post updated location
@@ -81,12 +72,12 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        hiking_session = HikingSession.objects.get(pk=request.data['hike_session']).values('start_elevation')
+        hiking_session = HikingSession.objects.get(pk=request.data['hike_session'])  #.values('start_elevation')
         hiking_session.current_elevation
-        print(hiking_session)
-        for elevation in start_elevation:
-            this_elevation = elevation['current_elevation']
-        print(this_elevation)
+        #print(hiking_session.current_elevation)
+        #for elevation in start_elevation:
+        this_elevation = hiking_session.current_elevation
+        #print(this_elevation)
         current_location = HikingSession.objects.filter(pk=request.data['hike_session']).values('start_location')
         #print(current_location)
         for location in current_location:
@@ -213,3 +204,14 @@ class BulkViewSet(generics.CreateAPIView):
     def get_serializer(self, *args, **kwargs):
         kwargs['many'] = True
         return super().get_serializer(*args, **kwargs)
+
+
+# """
+# GET /map/<int:pk>/<checkpoint_pk>/' - view updated location
+# """
+# class HikingCheckPointView(generics.ListCreateAPIView):
+#     queryset = HikingCheckPoint.objects.all()
+#     serializer_class = HikingCheckPointSerializer
+
+#     def get_queryset(self):
+#         return HikingCheckPoint.objects.filter(id=self.kwargs["checkpoint_pk"])
