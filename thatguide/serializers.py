@@ -43,3 +43,12 @@ class HikingCheckPointSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Valid Longitude Required, Needs To Be Between -180 And 180")
         return value
 
+
+class BulkCheckPointSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = HikingCheckPoint
+        fields = '__all__'
+
+
+

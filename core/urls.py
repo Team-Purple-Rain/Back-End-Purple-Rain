@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from thatguide import views
+from rest_framework import routers
 from django.contrib import admin
 from django.urls import path, include
+from thatguide.views import BulkViewSet
 
 urlpatterns = [
     path('', views.getMeme),
@@ -25,8 +27,12 @@ urlpatterns = [
     path('map/', views.HikingSessionView.as_view()),
     path('map/<int:pk>/', views.HikingSessionViewList.as_view()),
     path('map/<int:pk>/checkpoint/', views.HikingCheckPointPostView.as_view()),
-    path('map/<int:pk>/<checkpoint_pk>/', views.HikingCheckPointView.as_view()),
+    #path('map/<int:pk>/<checkpoint_pk>/', views.HikingCheckPointView.as_view()),
     path('users/', views.UserProfileView.as_view()),
     path('users/me/', views.UserEditView.as_view()),
     path('users/me/map/', views.UserHikingSessionView.as_view()),
+    path('map/<int:pk>/bulk/', views.BulkViewSet.as_view()),
 ]
+
+router = routers.DefaultRouter()
+router.register(r'bulks', views.BulkViewSet, basename='bulks')
