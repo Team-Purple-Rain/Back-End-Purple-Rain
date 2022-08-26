@@ -46,7 +46,7 @@ class User(AbstractUser):
 
 
 class HikingSession(TimeStamp):
-    hike_user = models.ForeignKey('User', related_name='hiker', on_delete=models.CASCADE, null=True, blank=True)
+    hike_user = models.ForeignKey('User', related_name='hiker', on_delete=models.CASCADE, null=True)
     distance = models.IntegerField(null=False, blank=False, default=1)
     #location is JSONField so that front-end can pass the object
     start_location = models.JSONField(null=False, blank=False)
