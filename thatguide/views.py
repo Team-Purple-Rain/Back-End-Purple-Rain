@@ -67,12 +67,19 @@ def calcu_elevation(c_elevation, this_elevation):
 
 
 """
-GET /map/ - view
-POST /map/ - start hiking session
+GET /map/ - view hiking session (logged in)
+POST /map/ - start hiking session (logged in)
 """
 class HikingSessionView(generics.ListCreateAPIView):
     queryset = HikingSession.objects.all()
     serializer_class = HikeSerializer
+
+    def perform_create(self, serializer):
+        hike_user = self.request.user
+        if hike_user.id is not None:
+            serializer.save(hike_user=self.request.user)
+        else:
+            serializer.save()
 
 
 """
