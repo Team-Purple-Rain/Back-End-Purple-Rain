@@ -30,6 +30,42 @@ def getMeme(request):
         })
 
 
+def get_distance(cord1, cord2):
+
+    # The math module contains a function named
+    # radians which converts from degrees to radians.
+    lon1 = radians(cord1['longitude'])
+    lon2 = radians(cord2['longitude'])
+    lat1 = radians(cord1['latitude'])
+    lat2 = radians(cord2['latitude'])
+
+    # Haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+
+    c = 2 * asin(sqrt(a))
+
+    # Radius of earth in miles
+    r = 3956
+
+    # calculate the result
+    return (c * r)
+
+
+def calc_elevation(new_elevation, this_elevation):
+    print(new_elevation)
+    elevation1 = new_elevation
+    elevation2 = this_elevation
+    return (elevation1 - elevation2)
+
+
+def calcu_elevation(c_elevation, this_elevation):
+    elevation1 = c_elevation
+    elevation2 = this_elevation
+    return (elevation1 - elevation2)
+
+
 """
 GET /map/ - view hiking session (logged in)
 POST /map/ - start hiking session (logged in)
@@ -90,60 +126,22 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        hiking_session = HikingSession.objects.get(pk=request.data['hike_session'])  #.values('start_elevation')
+        hiking_session = HikingSession.objects.get(pk=request.data['hike_session'])
         hiking_session.current_elevation
-        #print(hiking_session.current_elevation)
-        #for elevation in start_elevation:
         this_elevation = hiking_session.current_elevation
-        #print(this_elevation)
-        current_location = HikingSession.objects.filter(pk=request.data['hike_session']).values('start_location')
-        #print(current_location)
-        for location in current_location:
-            this_location = location['start_location']
-        #print(this_location)
-        current_distance = HikingSession.objects.filter(pk=request.data['hike_session']).values('distance_traveled')
-        #print(current_distance)
-        for distance in current_distance:
-            this_distance = distance['distance_traveled']
-        #print(this_distance)
-        if this_distance is not None:
+        current_location = hiking_session.start_location
+        this_location = current_location
+        current_distance = hiking_session.distance_traveled
+        if current_distance is not None:
             qs = HikingCheckPoint.objects.filter(hike_session__pk=request.data['hike_session']).order_by('-created_at')[:2]
             cord1, cord2 = [cp.location for cp in qs]
             new_elevation, this_elevation = [cpl.elevation for cpl in qs]
-            print(new_elevation)
+            print('line 136', new_elevation, this_elevation)
 
-            def get_distance(cord1, cord2):
-
-                # The math module contains a function named
-                # radians which converts from degrees to radians.
-                lon1 = radians(cord1['longitude'])
-                lon2 = radians(cord2['longitude'])
-                lat1 = radians(cord1['latitude'])
-                lat2 = radians(cord2['latitude'])
-
-                # Haversine formula
-                dlon = lon2 - lon1
-                dlat = lat2 - lat1
-                a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
-
-                c = 2 * asin(sqrt(a))
-
-                # Radius of earth in miles
-                r = 3956
-
-                # calculate the result
-                return (c * r)
-            HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=Decimal(get_distance(cord1, cord2)) + Decimal(this_distance))
-
-            def calc_elevation(new_elevation, this_elevation):
-                print(new_elevation)
-                elevation1 = new_elevation
-                elevation2 = this_elevation
-                return (elevation1 - elevation2)
-            HikingSession.objects.filter(pk=request.data['hike_session']).update(elevation_gain=calc_elevation(new_elevation, this_elevation))
+            HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=Decimal(get_distance(cord1, cord2)) + Decimal(current_distance), elevation_gain=calc_elevation(new_elevation, this_elevation))
             return response
-        
-        if this_distance is None:
+
+        if current_distance is None:
             qs = HikingCheckPoint.objects.filter(hike_session__pk=request.data['hike_session']).order_by('-created_at')[:1]
             get_location = qs.values('location')
             for current in get_location:
@@ -156,35 +154,7 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
             cord2 = current_spot
             cord1 = this_location
 
-            def get_distance(cord1, cord2):
-
-                # The math module contains a function named
-                # radians which converts from degrees to radians.
-                lon1 = radians(cord1['longitude'])
-                lon2 = radians(cord2['longitude'])
-                lat1 = radians(cord1['latitude'])
-                lat2 = radians(cord2['latitude'])
-
-                # Haversine formula
-                dlon = lon2 - lon1
-                dlat = lat2 - lat1
-                a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
-
-                c = 2 * asin(sqrt(a))
-
-                # Radius of earth in miles
-                r = 3956
-
-                # calculate the result
-                return (c * r)
-            HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=get_distance(cord1, cord2))
-
-            def calc_elevation(c_elevation, this_elevation):
-
-                elevation1 = c_elevation
-                elevation2 = this_elevation
-                return (elevation1 - elevation2)
-            HikingSession.objects.filter(pk=request.data['hike_session']).update(elevation_gain=calc_elevation(c_elevation, this_elevation))
+            HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=get_distance(cord1, cord2), elevation_gain=calcu_elevation(c_elevation, this_elevation))
             return response
 
 
@@ -222,3 +192,55 @@ class BulkViewSet(generics.CreateAPIView):
     def get_serializer(self, *args, **kwargs):
         kwargs['many'] = True
         return super().get_serializer(*args, **kwargs)
+    
+    # def get_queryset(self, **kwargs):
+    #     qs = HikingCheckPoint.objects.filter(hike_session__pk=kwargs['pk'])
+    #     print('line 202***', qs)
+    #     return qs
+
+    # def create(self, request, pk):
+    #     print('line 206', request.__dict__, pk)
+    #     response = super().create(request, pk)
+    #     print('line 210', response)
+    #     hiking_session = HikingSession.objects.get(pk=request.data['hike_session'])
+    #     #print(hiking_session)
+    #     hiking_session.current_elevation
+    #     #print(hiking_session.current_elevation)
+    #     this_elevation = hiking_session.current_elevation
+    #     print('line 216', this_elevation)
+    #     current_location = hiking_session.start_location
+    #     #print(current_location)
+    #     this_location = current_location
+    #     #print(this_location)
+    #     current_distance = hiking_session.distance_traveled
+    #     #print(current_distance)
+    #     ###checkpoint = sorted, takes list or iterable, 2nd argument is for sorting.  sort by field that the frton end is passing. ####
+    #     for info in response:
+    #         #sorted = info
+    #         print('line 227', info)
+
+    #         #current_distance = data['current_distance']
+    #         if current_distance is not None:
+    #             qs = HikingCheckPoint.objects.filter(hike_session__pk=request.data['hike_session']).order_by('-created_at')[:2]
+    #             cord1, cord2 = [cp.location for cp in qs]
+    #             new_elevation, this_elevation = [cpl.elevation for cpl in qs]
+    #             #print(new_elevation)
+
+    #             HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=Decimal(get_distance(cord1, cord2)) + Decimal(current_distance), elevation_gain=calc_elevation(new_elevation, this_elevation))
+    #             return response
+            
+    #         if current_distance is None:
+    #             qs = HikingCheckPoint.objects.filter(hike_session__pk=request.data['hike_session']).order_by('-created_at')[:1]
+    #             get_location = qs.values('location')
+    #             for current in get_location:
+    #                 current_spot = current['location']
+    #             new_elevation = qs.values('elevation')
+    #             for e in new_elevation:
+    #                 c_elevation = e['elevation']
+    #             print(c_elevation)
+
+    #             cord2 = current_spot
+    #             cord1 = this_location
+
+    #             HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=get_distance(cord1, cord2), elevation_gain=calc_elevation(c_elevation, this_elevation))
+    #             return response
