@@ -191,23 +191,27 @@ class BulkViewSet(generics.CreateAPIView):
 
     def get_serializer(self, *args, **kwargs):
         kwargs['many'] = True
+        print("hey, I hate this code")
         return super().get_serializer(*args, **kwargs)
+        
     
     # def get_queryset(self, **kwargs):
     #     qs = HikingCheckPoint.objects.filter(hike_session__pk=kwargs['pk'])
-    #     print('line 202***', qs)
+    #     print('line 198***', qs)
     #     return qs
 
-    # def create(self, request, pk):
-    #     print('line 206', request.__dict__, pk)
-    #     response = super().create(request, pk)
-    #     print('line 210', response)
+    # def create(self, request, *args, **kwargs):
+    #     #kwargs['many'] = True
+    #     print('line 202***', self, request, args, kwargs)
+    #     response = super().create(request)
+    #     print('line 204', response)
+    #     print("line******", HikingSession.objects.get(kwargs=request.data()))
     #     hiking_session = HikingSession.objects.get(pk=request.data['hike_session'])
-    #     #print(hiking_session)
+    #     print('line 206', hiking_session)
     #     hiking_session.current_elevation
     #     #print(hiking_session.current_elevation)
     #     this_elevation = hiking_session.current_elevation
-    #     print('line 216', this_elevation)
+    #     print('line 210', this_elevation)
     #     current_location = hiking_session.start_location
     #     #print(current_location)
     #     this_location = current_location
@@ -217,7 +221,7 @@ class BulkViewSet(generics.CreateAPIView):
     #     ###checkpoint = sorted, takes list or iterable, 2nd argument is for sorting.  sort by field that the frton end is passing. ####
     #     for info in response:
     #         #sorted = info
-    #         print('line 227', info)
+    #         print('line 220', info)
 
     #         #current_distance = data['current_distance']
     #         if current_distance is not None:
