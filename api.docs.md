@@ -41,7 +41,7 @@ Base url for all endpoints:
         "distance_traveled": null,
         "avg_mph": null,
         "travel_time": null,
-        "elevation_gain": null,
+        "elevation_gain": 0,
         "elevation_loss": 0,
         "current_elevation": null,
         "hike_user": null
@@ -72,7 +72,7 @@ Base url for all endpoints:
       "distance_traveled": null,
       "avg_mph": null,
       "travel_time": 8,
-      "elevation_gain": null,
+      "elevation_gain": 0,
       "elevation_loss": 0,
       "current_elevation": null,
       "hike_user": null
@@ -103,7 +103,7 @@ Base url for all endpoints:
       "distance_traveled": null,
       "avg_mph": null,
       "travel_time": 8,
-      "elevation_gain": null,
+      "elevation_gain": 0,
       "elevation_loss": 0,
       "current_elevation": null,
       "hike_user": null
@@ -148,7 +148,7 @@ Base url for all endpoints:
           "latitude": 52.099105,
           "longitude": -64.660706
         },
-        "elevation": null,
+        "elevation": 150,
         "hike_session": 4
       }
 ```
@@ -291,7 +291,7 @@ Base url for all endpoints:
 		"distance_traveled": null,
 		"avg_mph": null,
 		"travel_time": null,
-		"elevation_gain": null,
+		"elevation_gain": 0,
     "elevation_loss": 0,
 		"current_elevation": "40.00",
 		"hike_user": 5
@@ -312,7 +312,7 @@ Base url for all endpoints:
 		"distance_traveled": null,
 		"avg_mph": null,
 		"travel_time": null,
-		"elevation_gain": null,
+		"elevation_gain": 0,
     "elevation_loss": 0,
 		"current_elevation": "40.00",
 		"hike_user": 5
