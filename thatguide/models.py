@@ -55,7 +55,7 @@ class HikingSession(TimeStamp):
     avg_mph = models.IntegerField(null=True, blank=True)
     #travel_time is an integerfield in secconds. Total amount to be divded by 60 to get minutes. 
     travel_time = models.IntegerField(null=True, blank=True)
-    elevation_gain = models.IntegerField(null=True, blank=True)
+    elevation_gain = models.IntegerField(null=True, blank=True, default=0)
     elevation_loss = models.IntegerField(null=True, blank=True, default=0)
     current_elevation = models.DecimalField(null=True, blank=True, max_digits=7, decimal_places=2)
 
