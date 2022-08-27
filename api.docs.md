@@ -42,8 +42,8 @@ Base url for all endpoints:
         "avg_mph": null,
         "travel_time": null,
         "elevation_gain": null,
-        "current_elevation": null,
         "elevation_loss": 0,
+        "current_elevation": null,
         "hike_user": null
 }
 ```
@@ -104,6 +104,7 @@ Base url for all endpoints:
       "avg_mph": null,
       "travel_time": 8,
       "elevation_gain": null,
+      "elevation_loss": 0,
       "current_elevation": null,
       "hike_user": null
     }
@@ -291,6 +292,7 @@ Base url for all endpoints:
 		"avg_mph": null,
 		"travel_time": null,
 		"elevation_gain": null,
+    "elevation_loss": 0,
 		"current_elevation": "40.00",
 		"hike_user": 5
 	},
@@ -311,6 +313,7 @@ Base url for all endpoints:
 		"avg_mph": null,
 		"travel_time": null,
 		"elevation_gain": null,
+    "elevation_loss": 0,
 		"current_elevation": "40.00",
 		"hike_user": 5
 	}
