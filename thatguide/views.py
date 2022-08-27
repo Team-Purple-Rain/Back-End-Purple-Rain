@@ -53,22 +53,22 @@ def get_distance(cord1, cord2):
     return (c * r)
 
 
-def calc_elevation(new_elevation, this_elevation):
-    print(new_elevation)
+def calc_elevation(new_elevation, old_elevation):
+    #print(new_elevation)
     elevation1 = new_elevation
-    elevation2 = this_elevation
+    elevation2 = old_elevation
     return (elevation1 - elevation2)
 
 
-def calcu_elevation(c_elevation, this_elevation):
+def calcu_elevation(c_elevation, current_elevation):
     elevation1 = c_elevation
-    elevation2 = this_elevation
+    elevation2 = current_elevation
     return (elevation1 - elevation2)
 
 
 """
-GET /map/ - view hiking session (logged in)
-POST /map/ - start hiking session (logged in)
+GET /map/ - view hiking session 
+POST /map/ - start hiking session 
 """
 class HikingSessionView(generics.ListCreateAPIView):
     queryset = HikingSession.objects.all()
@@ -128,35 +128,54 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
         response = super().create(request, *args, **kwargs)
         hiking_session = HikingSession.objects.get(pk=request.data['hike_session'])
         hiking_session.current_elevation
-        this_elevation = hiking_session.current_elevation
+        current_elevation = hiking_session.current_elevation
         current_location = hiking_session.start_location
         this_location = current_location
         current_distance = hiking_session.distance_traveled
+        end_location = hiking_session.end_location
+        elevation_gain = hiking_session.elevation_gain
+        elevation_loss = hiking_session.elevation_loss
+        print('line 138', end_location)
         if current_distance is not None:
             qs = HikingCheckPoint.objects.filter(hike_session__pk=request.data['hike_session']).order_by('-created_at')[:2]
             cord1, cord2 = [cp.location for cp in qs]
-            new_elevation, this_elevation = [cpl.elevation for cpl in qs]
-            print('line 136', new_elevation, this_elevation)
+            new_elevation, old_elevation = [cpl.elevation for cpl in qs]
+            #print('line 136', new_elevation, this_elevation)
+            
+            checkpoint_gain = calc_elevation(new_elevation, old_elevation)
+            if checkpoint_gain >= 0:
+                HikingSession.objects.filter(pk=request.data['hike_session']).update(elevation_gain=checkpoint_gain + elevation_gain)
+            else:
+                HikingSession.objects.filter(pk=request.data['hike_session']).update(elevation_loss=checkpoint_gain + elevation_loss)
 
-            HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=Decimal(get_distance(cord1, cord2)) + Decimal(current_distance), elevation_gain=calc_elevation(new_elevation, this_elevation))
+            HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=Decimal(get_distance(cord1, cord2)) + Decimal(current_distance))
             return response
 
         if current_distance is None:
             qs = HikingCheckPoint.objects.filter(hike_session__pk=request.data['hike_session']).order_by('-created_at')[:1]
             get_location = qs.values('location')
+            print('line 155', get_location)
             for current in get_location:
                 current_spot = current['location']
             new_elevation = qs.values('elevation')
+            print('line 159', new_elevation)
             for e in new_elevation:
                 c_elevation = e['elevation']
-            print(c_elevation)
+            #print(c_elevation)
 
             cord2 = current_spot
             cord1 = this_location
 
-            HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=get_distance(cord1, cord2), elevation_gain=calcu_elevation(c_elevation, this_elevation))
+            checkpoint_gain = calcu_elevation(c_elevation, current_elevation)
+            if checkpoint_gain >= 0:
+                HikingSession.objects.filter(pk=request.data['hike_session']).update(elevation_gain=checkpoint_gain)
+            else:
+                HikingSession.objects.filter(pk=request.data['hike_session']).update(elevation_loss=checkpoint_gain)
+            HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=get_distance(cord1, cord2))
             return response
 
+        # if end_location is None:
+        #     print('**********', end_location)
 
 """
 GET /users/ - display all users
