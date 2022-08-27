@@ -24,7 +24,7 @@ class HikeSerializer(serializers.ModelSerializer):
         return value
 
     def validate_distance(self, value):
-        if round(value) not in range(0, 11):
+        if round(value) not in range(0, 10000):
             raise serializers.ValidationError("Valid Distance Required, Needs To Be Between 0.1 And 10")
         return value
 
