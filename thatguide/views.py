@@ -1,3 +1,5 @@
+import json
+import os
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -12,7 +14,13 @@ from math import radians, cos, sin, asin, sqrt
 #from django.db.models import F
 #from django.shortcuts import get_object_or_404
 from decimal import Decimal
+#from thatguide import test
 #from thatguide.rest import CreateBulkMixin
+from django.conf import settings
+
+
+
+
 
 
 """
@@ -73,6 +81,36 @@ POST /map/ - start hiking session
 class HikingSessionView(generics.ListCreateAPIView):
     queryset = HikingSession.objects.all()
     serializer_class = HikeSerializer
+
+    def create(self, request, *args, **kwargs):
+        if 'end_location' in request.data:
+            f = open(os.path.join(settings.BASE_DIR, 'static', 'trail.json'))
+            data = json.load(f)
+            distance = 0
+            current_cord = None
+            next_cord = None
+            start_location = request.data['start_location']
+            end_location = request.data['end_location']
+
+            for long, lat in data['features'][0]['geometry']['coordinates']:
+
+                if current_cord:
+                    next_cord = current_cord
+                    current_cord = {'longitude': long, 'latitude': lat}
+                    distance += get_distance(current_cord, next_cord)
+
+                elif start_location['longitude'] == long and start_location['latitude'] == lat:
+                    current_cord = start_location
+
+                if end_location['longitude'] == long and end_location['latitude'] == lat:
+                    break
+
+            request.data['distance'] = int(distance)
+
+        response = super().create(request, *args, **kwargs)
+        return response
+
+
 
     def perform_create(self, serializer):
         hike_user = self.request.user
@@ -154,11 +192,11 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
         if current_distance is None:
             qs = HikingCheckPoint.objects.filter(hike_session__pk=request.data['hike_session']).order_by('-created_at')[:1]
             get_location = qs.values('location')
-            print('line 155', get_location)
+            print('line 157', get_location)
             for current in get_location:
                 current_spot = current['location']
             new_elevation = qs.values('elevation')
-            print('line 159', new_elevation)
+            print('line 161', new_elevation)
             for e in new_elevation:
                 c_elevation = e['elevation']
             #print(c_elevation)
@@ -174,8 +212,8 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
             HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=get_distance(cord1, cord2))
             return response
 
-        # if end_location is None:
-        #     print('**********', end_location)
+        if end_location is None:
+            print('**********', end_location)
 
 """
 GET /users/ - display all users

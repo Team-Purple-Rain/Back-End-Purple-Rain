@@ -15,6 +15,7 @@ djoser = "*"
 django-cors-headers = "*"
 flake8 = "*"
 django-heroku = "*"
+geojson = "*"
 
 [dev-packages]
 flake8 = "*"
