@@ -22,32 +22,95 @@ Base url for all endpoints:
 
 ## Start Hike App
 
-- **Start Hike Session**
+- **Start Hike Session - Select Destination Option**
   - method: `POST`
   - url: `<BASE_URL>/map/`
-  - data: IF YOU ARE A LOGGED IN USER you need to set authorization header with the token as the value
+  - Authorization data: IF YOU ARE A LOGGED IN USER you need to set authorization header with the token as the value
     - Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
+  - data required to start: The "start_location", "end_location", and "current_elecation"
+  - data calculated from backend once checkpoint is hit: "distance_travled" 
+  - data calculated from backend once hike is finished:  "elevation_gain" and "elevation_loss"
   - Response: 201 Created:
-
 ```
-{
-        "id": 3,
-        "created_at": "2022-08-15T02:12:48.444555Z",
-        "updated_at": "2022-08-15T02:12:48.444605Z",
-        "distance_list": 1,
-        "start_location": {
-          "latitude": 39.099105,
-          "longitude": -79.660706
-},
-        "end_location": null,
-        "distance_traveled": null,
-        "avg_mph": null,
-        "travel_time": null,
-        "elevation_gain": 0,
-        "elevation_loss": 0,
-        "current_elevation": null,
-        "hike_user": null
-}
+    {
+      "id": 101,
+      "hike_user": "Ryan",
+      "created_at": "2022-08-28T22:51:01.035359Z",
+      "updated_at": "2022-08-28T22:51:01.035398Z",
+      "distance": 279,
+      "start_location": {
+        "latitude": 40,
+        "longitude": -71
+      },
+      "end_location": {
+        "latitude": 43.988847,
+        "longitude": -71.907141
+      },
+      "distance_traveled": null,
+      "avg_mph": null,
+      "travel_time": null,
+      "elevation_gain": 0,
+      "elevation_loss": 0,
+      "current_elevation": 150
+    }
+```
+
+- **Start Hike Session - Set Distance Option**
+ - method: `POST`
+  - url: `<BASE_URL>/map/`
+  - Authorization data: IF YOU ARE A LOGGED IN USER you need to set authorization header with the token as the value
+    - Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
+  - data required to start: The "start_location" and "current_elecation"
+  - data calculated from backend once checkpoint is hit: "distance_travled" 
+  - data calculated from backend once hike is finished:  "elevation_gain" and "elevation_loss"
+```
+    {
+      "id": 101,
+      "hike_user": "Ryan",
+      "created_at": "2022-08-28T22:51:01.035359Z",
+      "updated_at": "2022-08-28T22:51:01.035398Z",
+      "distance": 279,
+      "start_location": {
+        "latitude": 40,
+        "longitude": -71
+      },
+      "end_location": null,
+      "distance_traveled": null,
+      "avg_mph": null,
+      "travel_time": null,
+      "elevation_gain": 0,
+      "elevation_loss": 0,
+      "current_elevation": 150
+    }
+```
+
+- **Start Hike Session - Freeform hike Option**
+ - method: `POST`
+  - url: `<BASE_URL>/map/`
+  - Authorization data: IF YOU ARE A LOGGED IN USER you need to set authorization header with the token as the value
+    - Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
+  - data required to start: The "start_location" and "current_elecation"
+  - data calculated from backend once checkpoint is hit: "distance_travled" 
+  - data calculated from backend once hike is finished:  "elevation_gain" and "elevation_loss"
+```
+    {
+      "id": 101,
+      "hike_user": "Ryan",
+      "created_at": "2022-08-28T22:51:01.035359Z",
+      "updated_at": "2022-08-28T22:51:01.035398Z",
+      "distance": 279,
+      "start_location": {
+        "latitude": 40,
+        "longitude": -71
+      },
+      "end_location": null,
+      "distance_traveled": null,
+      "avg_mph": null,
+      "travel_time": null,
+      "elevation_gain": 0,
+      "elevation_loss": 0,
+      "current_elevation": 150
+    }
 ```
 
 <br />
