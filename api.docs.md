@@ -25,6 +25,8 @@ Base url for all endpoints:
 - **Start Hike Session**
   - method: `POST`
   - url: `<BASE_URL>/map/`
+  - data: IF YOU ARE A LOGGED IN USER you need to set authorization header with the token as the value
+    - Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
   - Response: 201 Created:
 
 ```
