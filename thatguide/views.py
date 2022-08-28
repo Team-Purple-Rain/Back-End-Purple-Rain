@@ -74,6 +74,12 @@ def calcu_elevation(c_elevation, current_elevation):
     return (elevation1 - elevation2)
 
 
+f = open(os.path.join(settings.BASE_DIR, 'static', 'trail.json'))
+data = json.load(f)
+coordinates = [{'longitude': long, 'latitude': lat} for long, lat in data['features'][0]['geometry']['coordinates']]
+f.close()
+
+
 """
 GET /map/ - view hiking session 
 POST /map/ - start hiking session 
@@ -84,39 +90,53 @@ class HikingSessionView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         if 'end_location' in request.data and request.data['end_location'] is not None:
-            #print(request.data.end_location)
-            f = open(os.path.join(settings.BASE_DIR, 'static', 'trail.json'))
-            data = json.load(f)
             distance = 0
             current_cord = None
             next_cord = None
             start_location = request.data['start_location']
             end_location = request.data['end_location']
+            closest_distance = 100000
+            closest_cord = None
 
-            for long, lat in data['features'][0]['geometry']['coordinates']:
+            # calculate distance from users location to coordinates in json file, closest distance is "hop on" spot on trail
+            for cord in coordinates:
+                distance_to = get_distance(cord, start_location)
+                # comparing the distance from each point with closest point so far,
+                # find the point with shortest distance and assign variable
+                if distance_to < closest_distance:
+                    closest_distance = distance_to
+                    closest_cord = cord
+            
+            # loop through file and find accumlation distance from the start and finish point
+            for cord in coordinates:
 
+                # calculate the distance from point to point on the list between "hop" on coordinate and end location coordinate
+                # add distances together to get total distance to destination
                 if current_cord:
                     next_cord = current_cord
-                    current_cord = {'longitude': long, 'latitude': lat}
+                    current_cord = cord
                     distance += get_distance(current_cord, next_cord)
 
-                elif start_location['longitude'] == long and start_location['latitude'] == lat:
-                    current_cord = start_location
+                # looking for "hop on" location point
+                elif closest_cord == cord:
+                    current_cord = closest_cord
 
-                elif end_location['longitude'] == long and end_location['latitude'] == lat:
+                # if end is found first, swap the end points and continue looping
+                elif end_location == cord:
                     current_cord = end_location
-                    temp = start_location
-                    start_location = end_location
+                    temp = closest_cord
+                    closest_cord = end_location
                     end_location = temp
-                if end_location['longitude'] == long and end_location['latitude'] == lat:
+
+                # stop loop so that we calculate only the distance between the two points, we don't want distance outside of the coordinates
+                if end_location == cord:
                     break
 
-            request.data['distance'] = int(distance)
+
+            request.data['distance'] = int(distance + closest_distance)
 
         response = super().create(request, *args, **kwargs)
         return response
-
-
 
     def perform_create(self, serializer):
         hike_user = self.request.user
@@ -176,10 +196,9 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
         current_location = hiking_session.start_location
         this_location = current_location
         current_distance = hiking_session.distance_traveled
-        end_location = hiking_session.end_location
         elevation_gain = hiking_session.elevation_gain
         elevation_loss = hiking_session.elevation_loss
-        print('line 138', end_location)
+
         if current_distance is not None:
             qs = HikingCheckPoint.objects.filter(hike_session__pk=request.data['hike_session']).order_by('-created_at')[:2]
             cord1, cord2 = [cp.location for cp in qs]
@@ -218,8 +237,6 @@ class HikingCheckPointPostView(generics.ListCreateAPIView):
             HikingSession.objects.filter(pk=request.data['hike_session']).update(distance_traveled=get_distance(cord1, cord2))
             return response
 
-        if end_location is None:
-            print('**********', end_location)
 
 """
 GET /users/ - display all users
