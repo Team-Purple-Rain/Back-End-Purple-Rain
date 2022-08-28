@@ -83,7 +83,8 @@ class HikingSessionView(generics.ListCreateAPIView):
     serializer_class = HikeSerializer
 
     def create(self, request, *args, **kwargs):
-        if 'end_location' in request.data:
+        if 'end_location' in request.data and request.data['end_location'] is not None:
+            #print(request.data.end_location)
             f = open(os.path.join(settings.BASE_DIR, 'static', 'trail.json'))
             data = json.load(f)
             distance = 0
@@ -102,6 +103,11 @@ class HikingSessionView(generics.ListCreateAPIView):
                 elif start_location['longitude'] == long and start_location['latitude'] == lat:
                     current_cord = start_location
 
+                elif end_location['longitude'] == long and end_location['latitude'] == lat:
+                    current_cord = end_location
+                    temp = start_location
+                    start_location = end_location
+                    end_location = temp
                 if end_location['longitude'] == long and end_location['latitude'] == lat:
                     break
 
