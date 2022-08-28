@@ -27,7 +27,7 @@ Base url for all endpoints:
   - url: `<BASE_URL>/map/`
   - Authorization data: IF YOU ARE A LOGGED IN USER you need to set authorization header with the token as the value
     - Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
-  - data required to start: The "start_location", "end_location", and "current_elecation"
+  - data required to start: The "start_location", "end_location", and "current_elevation"
   - data calculated from backend once checkpoint is hit: "distance_travled" 
   - data calculated from backend once hike is finished:  "elevation_gain" and "elevation_loss"
   - Response: 201 Created:
@@ -60,7 +60,7 @@ Base url for all endpoints:
   - url: `<BASE_URL>/map/`
   - Authorization data: IF YOU ARE A LOGGED IN USER you need to set authorization header with the token as the value
     - Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
-  - data required to start: The "start_location" and "current_elecation"
+  - data required to start: The "start_location" and "current_elevation"
   - data calculated from backend once checkpoint is hit: "distance_travled" 
   - data calculated from backend once hike is finished:  "elevation_gain" and "elevation_loss"
 ```
@@ -89,7 +89,7 @@ Base url for all endpoints:
   - url: `<BASE_URL>/map/`
   - Authorization data: IF YOU ARE A LOGGED IN USER you need to set authorization header with the token as the value
     - Example: `Authorization: Token b4eecdcb2731a4a1383ad2ae15a2eb2fd6a1ac3d`
-  - data required to start: The "start_location" and "current_elecation"
+  - data required to start: The "start_location" and "current_elevation"
   - data calculated from backend once checkpoint is hit: "distance_travled" 
   - data calculated from backend once hike is finished:  "elevation_gain" and "elevation_loss"
 ```
